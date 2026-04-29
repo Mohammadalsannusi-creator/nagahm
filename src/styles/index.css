@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: #f7fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #1d75ed;
+  --accent: #14b8a6;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --surface: #111a2e;
+  --text: #e6edf6;
+  --muted: #94a3b8;
+  --border: #1f2a44;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: "Cairo", "Tajawal", system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 border-slate-200 shadow-sm;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-semibold transition active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-medical-600 text-white hover:bg-medical-700;
+  }
+  .btn-ghost {
+    @apply btn text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+  .input {
+    @apply w-full rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 bg-white px-4 py-2 outline-none focus:border-medical-500;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+}
+
+/* PDF.js text layer compat */
+.pdf-canvas-wrap { position: relative; }
+.pdf-canvas-wrap canvas { display: block; max-width: 100%; }
+
+/* model-viewer fill */
+model-viewer { width: 100%; height: 100%; }
