@@ -1,5 +1,5 @@
 // عميل بسيط للنداء الـ Vercel Function /api/chat
-// يحمي مفتاح Anthropic (لا يُرسل من المتصفح أبداً).
+// يحمي مفتاح Google AI (لا يُرسل من المتصفح أبداً).
 
 export async function callProfessor({ messages, system, useWebSearch = true }) {
   const res = await fetch("/api/chat", {
@@ -7,6 +7,7 @@ export async function callProfessor({ messages, system, useWebSearch = true }) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ messages, system, useWebSearch }),
   });
+
   if (!res.ok) {
     let detail = `${res.status}`;
     try {
@@ -15,15 +16,13 @@ export async function callProfessor({ messages, system, useWebSearch = true }) {
     } catch {}
     throw new Error(`تعذّر استدعاء بروفيسور زكي: ${detail}`);
   }
+
   const data = await res.json();
-  // نستخرج النص الأول من content blocks
-  const text =
-    data?.content
-      ?.filter((b) => b.type === "text")
-      .map((b) => b.text)
-      .join("\n\n") || "";
-  const citations = (data?.content || [])
-    .flatMap((b) => b.citations || [])
-    .map((c) => ({ title: c.title, url: c.url, source: c.cited_text }));
-  return { text, citations, raw: data };
+
+  // الاستجابة: { text, citations }
+  return {
+    text: data.text || "",
+    citations: data.citations || [],
+    raw: data,
+  };
 }
